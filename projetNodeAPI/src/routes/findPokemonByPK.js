@@ -1,11 +1,22 @@
 const { Pokemon } = require('../database/sequelize')
+const auth = require("../auth/auth")
   
 module.exports = (app) => {
-  app.get('/api/pokemons/:id', (req, res) => {
+  app.get('/api/pokemons/:id', auth, (req, res) => {
     Pokemon.findByPk(req.params.id)
       .then(pokemon => {
-        const message = 'Un pokémon a bien été trouvé.'
-        res.json({ message, data: pokemon })
+        if(pokemon === null) {
+          const message = `Aucun pokemon ne correspond à ce numero, réessayez avec un autre id !`
+          res.status(404).json({message, data: error})
+        }
+        else {
+          const message = 'Un pokémon a bien été trouvé.'
+          res.json({ message, data: pokemon })
+        }
+      })
+      .catch(error => {
+        const message = `Le pokemon n/'a pas pu être récupéré, réesayez dans quelques instants !`
+        res.status(500).json({message, data: error})
       })
   })
 }

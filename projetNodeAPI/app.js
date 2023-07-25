@@ -8,7 +8,7 @@ const sequelize = require('./src/database/sequelize')
 
 //DECLARATIONS
 const app = express()
-const port = 3000 
+const port = process.env.PORT || 3000
 
 
 
@@ -19,10 +19,10 @@ app.use(favicon(__dirname + '/favicon.ico'))
   
 //GESTION DES ERREURS 404
 
-app.use(({res}) => {
-    const message = 'Impossible de trouver la ressource demandée... Essayer un autre URL !'
-    res.status(404).json({message})
-})
+// app.use(({res}) => {
+//     const message = 'Impossible de trouver la ressource demandée... Essayer un autre URL !'
+//     res.status(404).json({message})
+// })
 
 
 //ROUTES AUSSI APPELER ENDPOINT OU POINT DE TERMINAISON
@@ -32,6 +32,7 @@ require('./src/routes/findPokemonByPK')(app)
 require('./src/routes/createPokemon')(app)
 require('./src/routes/updatePokemon')(app)
 require('./src/routes/deletePokemon')(app)
+require('./src/routes/login')(app)
 
 // app.get('/', (req,res)=> res.send("Hello Node !"))
 
